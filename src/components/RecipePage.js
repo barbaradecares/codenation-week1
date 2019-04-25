@@ -1,27 +1,23 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react'
+import PropTypes from 'prop-types'
 
-const RecipePage = ({ recipe }) => {
-  if (recipe) {
-    return (
-      <div>
-        <img className="card-img-top img-fluid" src={recipe.thumbnail} alt="" />
+// TODO: Você deve verificar se a receita existe
+const RecipePage = ({
+    recipe
+}) => (
+    <div>
+        <img className="card-img-top img-fluid" src="https://via.placeholder.com/350x300" alt="" />
         <div className="card-body">
-          <h5 className="card-title">{recipe.title}</h5>
-          <p className="card-text">
-            <strong>Ingredients: </strong>
-            {recipe.ingredients}
-          </p>
+            <h5 className="card-title">TITLE HERE</h5>
+            <p className="card-text">
+                <strong>Ingredients: </strong>INGREDIENTS HERE
+            </p>
         </div>
-      </div>
-    );
-  } else {
-    return <h1>Recipe not found</h1>;
-  }
-};
+    </div>
+)
 
 RecipePage.propTypes = {
-  recipe: PropTypes.object
-};
+    recipe: PropTypes.object
+}
 
-export default RecipePage;
+export default RecipePage
