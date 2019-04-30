@@ -5,10 +5,13 @@ import Home from "./Home";
 import RecipePage from "./RecipePage";
 import { slugify } from "../helpers";
 import recipes from "../sample_data/recipes.json";
-import { withRouter } from "react-router";
+import { withRouter, matchPath } from "react-router";
 
 class App extends Component {
   filteredRecipes(searchString) {
+    if (!searchString) {
+      return recipes.results;
+    }
     return recipes.results.filter(
       recipe =>
         recipe.title.toLowerCase().includes(searchString.toLowerCase()) ||
@@ -17,48 +20,50 @@ class App extends Component {
   }
 
   getRecipeFromSlug(slug) {
-    const found = recipes.results.find(
-      recipe => slugify(recipe.title) === slug
-    );
-    return found;
+    return recipes.results.find(recipe => slugify(recipe.title) === slug);
   }
+
+  recipeOnClick = recipeName => {
+    this.props.history.push(`/recipe/${slugify(recipeName)}`);
+  };
+
+  getSearchString = () => {
+    const match = matchPath(this.props.location.pathname, {
+      path: "/:searchString",
+      exact: true
+    });
+
+    return match ? match.params.searchString : "";
+  };
+
+  onNavBarChange = input => {
+    this.props.history.push(`/${input}`);
+  };
 
   render() {
     return (
       <div className="App">
         <Navbar
-          searchString={this.props.location.pathname.slice(1)}
-          history={this.props.history}
+          searchString={this.getSearchString()}
+          onNavBarChange={this.onNavBarChange}
         />
         )}/>
         <div className="container mt-10">
           <Route
-            exact
-            path="/"
-            render={() => (
-              <Home recipes={recipes.results} history={this.props.history} />
-            )}
-          />
-          <Route
-            exact
-            path="/:searchString"
-            render={() => (
+            path="/:searchString?"
+            render={props => (
               <Home
-                history={this.props.history}
-                recipes={this.filteredRecipes(
-                  this.props.location.pathname.slice(1)
-                )}
+                recipeOnClick={this.recipeOnClick}
+                recipes={this.filteredRecipes(props.match.params.searchString)}
               />
             )}
           />
           <Route
             exact
             path="/recipe/:slug"
-            render={() => (
+            render={props => (
               <RecipePage
-                recipe={this.getRecipeFromSlug(
-                  this.props.location.pathname.split("recipe/")[1]
-                )}
+                recipe={this.getRecipeFromSlug(props.match.params.slug)}
               />
             )}
           />

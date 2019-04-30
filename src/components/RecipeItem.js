@@ -1,10 +1,9 @@
 import React from "react";
-import { slugify } from "../helpers";
 
 const RecipeItem = props => (
   <div
     className="col-sm-3 mt-4"
-    onClick={() => props.history.push(`/recipe/${slugify(props.recipe.title)}`)}
+    onClick={() => props.recipeOnClick(props.recipe.title)}
   >
     <div className="card">
       <img

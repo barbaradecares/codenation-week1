@@ -2,13 +2,12 @@ import React from "react";
 import PropTypes from "prop-types";
 import RecipeItem from "./RecipeItem";
 
-const Home = ({ searchString = "", recipes = [], history }) => {
+const Home = ({ searchString = "", recipes = [], recipeOnClick }) => {
   return (
     <div className="row">
       {recipes.map(recipe => {
-        return <RecipeItem history={history} recipe={recipe} />;
+        return <RecipeItem recipeOnClick={recipeOnClick} recipe={recipe} />;
       })}
-      ;
     </div>
   );
 };
